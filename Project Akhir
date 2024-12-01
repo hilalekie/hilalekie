@@ -1,10 +1,141 @@
 import java.util.Scanner;
 
-public class happyending {
-    public static void main(String[] args) {
-      
-        Scanner gas = new Scanner(System.in);
-        
+public class ProgramMenabung {
 
-       }
+    static int urutanTips = 0; // Variabel global untuk melacak urutan tips
+
+    public static void main(String[] args) {
+        Scanner hilal = new Scanner(System.in);
+
+        while (true) {
+            
+            System.out.println("Pilih metode menabung:");
+            System.out.println("1. Menabung Berdasarkan Keuangan (Menentukan jumlah tabungan per periode)");
+            System.out.println("2. Menabung Berdasarkan Waktu (Menentukan waktu pencapaian target)");
+
+            int metodeMenabung = hilal.nextInt();
+            hilal.nextLine(); 
+            
+            if (metodeMenabung == 1) {
+                menabungBerdasarkanKeuangan(hilal);
+            } else if (metodeMenabung == 2) {
+                menabungBerdasarkanWaktu(hilal);
+            } else {
+                System.out.println("Pilihan tidak valid. Program dihentikan.");
+                break;
+            }
+
+            tampilkanTipsMenabung();
+
+            System.out.print("\nApakah Anda ingin melanjutkan program? (ya/tidak): ");
+            String pilihanLanjut = hilal.nextLine();
+
+            if (pilihanLanjut.equalsIgnoreCase("tidak")) {
+                System.out.println("SEMOGA TUJUAN ANDA TERCAPAI!");
+                break;
+            } else if (!pilihanLanjut.equalsIgnoreCase("ya")) {
+                System.out.println(" ");
+                break;
+            }
+        }
+    }
+
+    
+    public static void menabungBerdasarkanKeuangan(Scanner hilal) {
+        System.out.print("Masukkan jumlah uang yang ingin ditabung (dalam rupiah): ");
+        long target = hilal.nextLong();
+        hilal.nextLine(); 
+
+        System.out.print("Masukkan tujuan tabungan Anda: ");
+        String tujuanTabungan = hilal.nextLine();
+
+        int pilihanFrekuensi;
+        while (true) {
+            System.out.print("Apakah Anda ingin menabung setiap hari (1), minggu (2), atau bulan (3)? ");
+            pilihanFrekuensi = hilal.nextInt();
+            hilal.nextLine(); 
+
+            if (pilihanFrekuensi == 1 || pilihanFrekuensi == 2 || pilihanFrekuensi == 3) {
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid, silakan masukkan 1, 2, atau 3.");
+            }
+        }
+
+        System.out.print("Masukkan jumlah uang yang ingin Anda tabung per periode: ");
+        long jumlahPerPeriode = hilal.nextLong();
+        hilal.nextLine();
+
+        long waktu = hitungWaktuUntukMencapaiTarget(target, jumlahPerPeriode, pilihanFrekuensi);
+
+        tampilkanInformasi(tujuanTabungan, waktu, pilihanFrekuensi, jumlahPerPeriode);
+    }
+
+    public static void menabungBerdasarkanWaktu(Scanner hilal) {
+        System.out.print("Masukkan jumlah uang yang ingin ditabung (dalam rupiah): ");
+        long target = hilal.nextLong();
+        hilal.nextLine();
+
+        System.out.print("Masukkan tujuan tabungan Anda: ");
+        String tujuanTabungan = hilal.nextLine();
+
+        int pilihanFrekuensi;
+        while (true) {
+            System.out.print("Apakah Anda ingin menabung setiap hari (1), minggu (2), atau bulan (3)? ");
+            pilihanFrekuensi = hilal.nextInt();
+            hilal.nextLine(); 
+
+            if (pilihanFrekuensi == 1 || pilihanFrekuensi == 2 || pilihanFrekuensi == 3) {
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid, silakan masukkan 1, 2, atau 3.");
+            }
+        }
+
+        System.out.print("Masukkan waktu pencapaian (berapa lama Anda ingin mencapai target): ");
+        int waktu = hilal.nextInt();
+        hilal.nextLine(); 
+
+        long jumlahPerPeriode = hitungJumlahPerPeriode(target, waktu);
+
+        tampilkanInformasi(tujuanTabungan, waktu, pilihanFrekuensi, jumlahPerPeriode);
+    }
+
+    public static long hitungJumlahPerPeriode(long target, int waktu) {
+        return target / waktu;
+    }
+
+    public static long hitungWaktuUntukMencapaiTarget(long target, long jumlahPerPeriode, int pilihanFrekuensi) {
+        return target / jumlahPerPeriode; 
+    }
+
+    public static void tampilkanInformasi(String tujuanTabungan, long waktu, int pilihanFrekuensi, long jumlahPerPeriode) {
+        String frekuensi = "";
+
+        if (pilihanFrekuensi == 1) {
+            frekuensi = "hari";
+        } else if (pilihanFrekuensi == 2) {
+            frekuensi = "minggu";
+        } else {
+            frekuensi = "bulan";
+        }
+
+        System.out.println("\nTujuan tabungan Anda: " + tujuanTabungan);
+        System.out.println("Dengan menabung Rp " + jumlahPerPeriode + " setiap " + frekuensi + 
+                ", Anda akan mencapai target tabungan Anda dalam " + waktu + " " + frekuensi + ".");
+    }
+
+    public static void tampilkanTipsMenabung() {
+        String[] tips = {
+            "Disiplin dan Konsisten dalam menabung.",
+            "Menetapkan tujuan tabungan Anda agar Anda lebih termotivasi untuk menabung.",
+            "Catat pengeluaran harian Anda untuk mengetahui berapa uang yang telah Anda keluarkan.",
+            "Selalu menyisipkan uang Anda untuk ditabung, walaupun belum ada tujuan yang ingin Anda capai.",
+            "Menstrukturkan dengan baik antara kebutuhan, keinginan, dan tabungan agar tidak ada hal yang terlewat batas."
+        };
+
+        System.out.println("\nTips Menabung: " + tips[urutanTips]);
+
+        urutanTips = (urutanTips + 1) % tips.length; 
+    }
 }
